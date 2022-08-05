@@ -1,5 +1,4 @@
 # backend -> frontend, frontend -> backend (jinja from Flask)
-
 from googletrans import Translator
 from flask import Flask, render_template
 import requests
