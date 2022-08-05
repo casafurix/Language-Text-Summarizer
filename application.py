@@ -6,17 +6,17 @@ import requests
 from flask import request as req
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 translator = Translator()
 
 
-@app.route("/", methods=["GET", "POST"])
+@application.route("/", methods=["GET", "POST"])
 def Index():
     return render_template("index.html")
 
 
-@app.route("/Summarise", methods=["GET", "POST"])
+@application.route("/Summarise", methods=["GET", "POST"])
 def Summarise():
     if req.method == "POST":
         API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
@@ -53,5 +53,5 @@ def Summarise():
 
 
 if __name__ == "__main__":
-    app.debug = True
-    app.run()
+    application.debug = True
+    application.run()
