@@ -3,7 +3,6 @@ from googletrans import Translator
 from flask import Flask, render_template
 import requests
 from flask import request as req
-import os
 
 # port = 19865
 app = Flask(__name__)
@@ -53,4 +52,4 @@ def Summarise():
 
 
 if __name__ == "__main__":
-    app.run(port=19865)
+    app.run()
