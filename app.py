@@ -5,7 +5,7 @@ import requests
 from flask import request as req
 import os
 
-
+# port = 19865
 app = Flask(__name__)
 
 translator = Translator()
@@ -53,4 +53,4 @@ def Summarise():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=33507)
+    app.run(port=19865)
