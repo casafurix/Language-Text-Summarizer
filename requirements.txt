@@ -34,7 +34,6 @@ cmake==3.22.2
 colorama==0.4.4
 coverage==5.5
 cycler==0.11.0
-Cython==0.29.32
 cytoolz==0.11.0
 darglint==1.8.1
 dataclassy==0.10.4
