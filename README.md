@@ -2,8 +2,6 @@
 
 An NLP-based solution that generates short summaries in any required language! (Hindi here)
 
-## https://languagetextsummarizer.herokuapp.com/
-
 ## Installing required packages
 1. pip install googletrans==3.1.0a0 (PLEASE DO NOT RUN 'pip install googletrans', as their latest library is faulty! This specific version works only!)
 2. pip install flask
