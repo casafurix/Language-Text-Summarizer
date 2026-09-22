@@ -1,54 +1,50 @@
-# backend -> frontend, frontend -> backend (jinja from Flask)
-from googletrans import Translator
-from flask import Flask, render_template
-import requests
-from flask import request as req
+import os
 
-# port = 19865
+import requests
+from flask import Flask, render_template, request
+from googletrans import Translator
+
 app = Flask(__name__)
 
-translator = Translator()
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 
 
 @app.route("/", methods=["GET", "POST"])
-def Index():
+def index():
     return render_template("index.html")
 
 
 @app.route("/Summarise", methods=["GET", "POST"])
-def Summarise():
-    if req.method == "POST":
-        API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-        headers = {"Authorization": f"Bearer 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"}
+async def summarise():
+    if request.method != "POST":
+        return render_template("index.html")
 
-        data = req.form["data"]
+    token = os.environ.get("HF_API_TOKEN")
+    if not token:
+        return "HF_API_TOKEN is not configured", 503
 
-        # translating hindi input from user into english
-        translated_input = translator.translate(data, dest="en")
+    data = request.form["data"]
+    max_length = int(request.form["maxL"])
 
-        maxL = int(req.form["maxL"])
-        minL = maxL // 4
-
-        def query(payload):
-            response = requests.post(API_URL, headers=headers, json=payload)
-            return response.json()
-
-        output = query(
-            {
+    async with Translator() as translator:
+        translated_input = await translator.translate(data, dest="en")
+        response = requests.post(
+            API_URL,
+            headers={"Authorization": f"Bearer {token}"},
+            json={
                 "inputs": translated_input.text,
                 "parameters": {
-                    "min_length": minL,
-                    "max_length": maxL,
+                    "min_length": max_length // 4,
+                    "max_length": max_length,
                 },
-            }
-        )[0]
+            },
+            timeout=60,
+        )
+        response.raise_for_status()
+        summary = response.json()[0]["summary_text"]
+        translated_output = await translator.translate(summary, dest="hi")
 
-        # translating english output from backend to hindi output for user
-        translated_output = translator.translate(output["summary_text"], dest="hi")
-
-        return render_template("index.html", result=translated_output.text)
-    else:
-        return render_template("index.html")
+    return render_template("index.html", result=translated_output.text)
 
 
 if __name__ == "__main__":
