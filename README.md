@@ -3,8 +3,9 @@
 An NLP-based solution that generates short summaries in any required language! (Hindi here)
 
 ## Installing required packages
-1. pip install googletrans==3.1.0a0 (PLEASE DO NOT RUN 'pip install googletrans', as their latest library is faulty! This specific version works only!)
-2. pip install flask
+1. Create and activate a Python virtual environment.
+2. Run `pip install -r requirements.txt`.
+3. Set `HF_API_TOKEN` to a Hugging Face access token.
 
 On opening the terminal in the directory, and typing the command 'flask run' should get the app up and running!
 
